@@ -1,0 +1,39 @@
+import pandas as pd
+import numpy as np
+import scipy as scp
+from scipy import stats
+from scipy.stats import pearsonr
+import matplotlib as plt
+%matplotlib inline
+from matplotlib import pyplot
+data= pd.read_csv("D:/My Folder/ION/Assignment file for Data Analyst - assignment file.csv")
+data.info()
+data.describe().transpose()
+
+#PAIR 1
+pair1=stats.pointbiserialr(data['SOC'],data['Grid status'])
+print(pair1)
+dmean= data.SOC.groupby(data['Grid status']).mean()
+dmax=data.SOC.groupby(data['Grid status']).max()
+dmin=data.SOC.groupby(data['Grid status']).min()
+print('Mean is', dmean,'Max is',dmax, 'Min is',dmin)
+pyplot.subplot(2,2,1)
+dmean.plot.bar(title='Mean Charge status')
+pyplot.subplot(2,2,2)
+dmax.plot.bar(title='Max Charge status')
+pyplot.subplot(2,2)
+dmin.plot.bar(title='Min Charge status')
+
+#Pair2
+pair2=pearsonr(data['SOH'],data['Equivalent cycle'])
+print(pair2)
+plt.style.use('ggplot')
+pyplot.scatter(data['SOH'],data['Equivalent cycle'])
+pyplot.show
+
+#Pair 3
+pair3=pearsonr(data['SOC'],data['Temperature'])
+print(pair3)
+plt.style.use('ggplot')
+pyplot.scatter(data['SOC'],data['Temperature'])
+pyplot.show
